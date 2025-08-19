@@ -1,0 +1,24 @@
+name: Trigger workflow in Ship Shoot repo
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  trigger:
+    if: github.event.pull_request.merged == true || github.event.name == "workflow_dispatch"
+    runs-on: ubuntu-latest
+    steps:
+    - name: Trigger workflow in Ship Shoot repo
+      uses: peter-evans/repository-dispatch@v3
+      with:
+        token: "${{ secrets.PAT_TOKEN }}"
+        repository: FarzadBT/ship-shoot
+        event-type: Integration-with-Automation
